@@ -19,6 +19,7 @@ class AuthenticationService {
     fun getPartnerAuthenticationToken(login: PartnerLogin): LoginResponse {
 
         val jwtBuilder = getJwtBuilder()
+            .withClaim(PARTNER_ID_CLAIM, login.user)
             .sign(HMAC512(DEFAULT_SIGN_KEY.toByteArray()))
 
         return LoginResponse(
@@ -49,11 +50,11 @@ class AuthenticationService {
         }
     }
 
-    fun getDocumentNumberClaim(token: String): String {
+    fun getPartnerIdClaim(token: String): String {
         return  JWT.require(HMAC512(DEFAULT_SIGN_KEY.toByteArray()))
             .build()
             .verify(token.replace("Bearer ", ""))
-            .getClaim(USER_ID_CLAIM)
+            .getClaim(PARTNER_ID_CLAIM)
             .asString()
     }
 
@@ -67,7 +68,7 @@ class AuthenticationService {
     }
 
     private fun getExpiresAt(): Date? {
-        val expiration = Instant.now().plusSeconds(60)
+        val expiration = Instant.now().plusSeconds(180)
         return Date.from(expiration.atZone(ZoneId.systemDefault()).toInstant())
     }
 
@@ -76,5 +77,6 @@ class AuthenticationService {
         const val DEFAULT_ISSUER = "dextra.com.br"
         const val DEFAULT_SUBJECT = "dextra"
         const val USER_ID_CLAIM = "userId"
+        const val PARTNER_ID_CLAIM = "partnerId"
     }
 }

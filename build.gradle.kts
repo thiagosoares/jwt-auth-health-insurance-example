@@ -23,6 +23,7 @@ dependencies {
 	implementation ("io.springfox:springfox-swagger2:2.9.2")
 	implementation("io.springfox:springfox-swagger-ui:2.9.2")
 	implementation("com.auth0:java-jwt:3.9.0")
+	implementation("io.github.microutils:kotlin-logging:1.6.24")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}

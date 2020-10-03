@@ -30,7 +30,7 @@ class AuthenticationController(
     }
 
     @PostMapping("/customer/login")
-    @ApiOperation("Get Partner Authentication Token")
+    @ApiOperation("Get Customer Authentication Token")
     fun getCustomerAuthenticationToken(
         @RequestBody login: UserLogin,
         @RequestHeader("Authentication") authToken: String

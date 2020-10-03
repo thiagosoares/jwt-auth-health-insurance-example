@@ -1,13 +1,21 @@
 package com.dextra.alelo.samples.authentication.service
 
+import com.dextra.alelo.samples.authentication.model.response.AccountData
 import com.dextra.alelo.samples.authentication.model.response.AccountUsers
 import org.springframework.stereotype.Component
 
 @Component
 class AccountUserService {
 
-    fun getPlanUsers(documentNumber: String): AccountUsers {
-        return when (documentNumber) {
+    fun getAccountData(partnerId: String): AccountData {
+        return AccountData(
+            status = "Active",
+            partner = partnerId
+        )
+    }
+
+    fun getPlanUsers(partnerId: String): AccountUsers {
+        return when (partnerId) {
             "123" -> getCaptainAmericaPlan()
             "456" -> getThorPlan()
             else -> getCaptainAmericaPlan()
