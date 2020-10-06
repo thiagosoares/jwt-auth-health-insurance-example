@@ -2,6 +2,7 @@ package com.dextra.alelo.samples.authentication.controllers
 
 import com.dextra.alelo.samples.authentication.service.AccountUserService
 import com.dextra.alelo.samples.authentication.service.AuthenticationService
+import com.dextra.alelo.samples.authentication.service.AuthenticationService.Companion.PARTNER_ID_CLAIM
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import mu.KotlinLogging
@@ -25,16 +26,14 @@ class CheckoutController(
     @GetMapping("/pages")
     @ApiOperation("Get checkout pages")
     fun getAccountData(
-        @RequestHeader("transaction-id") transactionId: String,
         @RequestHeader("Authentication") authToken: String
     ): String {
-        val partnerId = authenticationService.getPartnerIdClaim(authToken)
 
-        logger.info {
-            "Getting checkout pages for $partnerId partner, with $transactionId transaction ID"
-        }
+        val partnerId = authenticationService.getClaim(PARTNER_ID_CLAIM, authToken)
+        val accountId = authenticationService.getClaim(AuthenticationService.ACCOUNT_ID_CLAIM, authToken)
 
-        return "Getting checkout pages for $partnerId partner, with $transactionId transaction ID"
+        return "Getting checkout pages for partner $partnerId, with accountId $accountId"
+            .also { logger.info { it } }
     }
 
 }

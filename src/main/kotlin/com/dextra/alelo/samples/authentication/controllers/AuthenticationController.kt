@@ -1,7 +1,7 @@
 package com.dextra.alelo.samples.authentication.controllers
 
 import com.dextra.alelo.samples.authentication.model.request.PartnerLogin
-import com.dextra.alelo.samples.authentication.model.request.UserLogin
+import com.dextra.alelo.samples.authentication.model.request.AccountLogin
 import com.dextra.alelo.samples.authentication.model.response.LoginResponse
 import com.dextra.alelo.samples.authentication.service.AuthenticationService
 import io.swagger.annotations.Api
@@ -22,19 +22,25 @@ class AuthenticationController(
 ) {
 
     @PostMapping("/login")
-    @ApiOperation("Get Partner Authentication Token")
+    @ApiOperation(
+        value = "Get Partner Authentication Token",
+        notes = "Partner token with partner id"
+    )
     fun getPartnerAuthenticationToken(
         @RequestBody login: PartnerLogin
     ): LoginResponse {
         return authenticationService.getPartnerAuthenticationToken(login)
     }
 
-    @PostMapping("/customer/login")
-    @ApiOperation("Get Customer Authentication Token")
-    fun getCustomerAuthenticationToken(
-        @RequestBody login: UserLogin,
+    @PostMapping("/account/login")
+    @ApiOperation(
+        value = "Get a Account Authentication Token",
+        notes = "Account token. Identify a Account specifically. Use the common transactionId to identify which account is requested.  Contains a partnerId and accountId "
+    )
+    fun getAccountAuthenticationToken(
+        @RequestBody login: AccountLogin,
         @RequestHeader("Authentication") authToken: String
     ): LoginResponse {
-        return authenticationService.getCustomerAuthenticationToken(login, authToken)
+        return authenticationService.getAccountAuthenticationToken(login, authToken)
     }
 }

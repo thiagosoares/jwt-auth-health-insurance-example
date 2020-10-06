@@ -4,6 +4,8 @@ import com.dextra.alelo.samples.authentication.model.response.AccountData
 import com.dextra.alelo.samples.authentication.model.response.AccountUsers
 import com.dextra.alelo.samples.authentication.service.AccountUserService
 import com.dextra.alelo.samples.authentication.service.AuthenticationService
+import com.dextra.alelo.samples.authentication.service.AuthenticationService.Companion.PARTNER_ID_CLAIM
+import com.dextra.alelo.samples.authentication.service.AuthenticationService.Companion.TOKEN_TYPE_ID_CLAIM
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import mu.KotlinLogging
@@ -26,33 +28,41 @@ class AccountController(
     private val logger = KotlinLogging.logger {}
 
     @GetMapping("/{accountId}")
-    @ApiOperation("Get Account Data")
+    @ApiOperation(
+        value = "Get Account Data",
+        notes = "Get the account data using the Partner token ant the common accountID"
+    )
     fun getAccountData(
         @PathVariable accountId: String,
-        @RequestHeader("Authentication") authToken: String
+        @RequestHeader("Authentication") accountToken: String
     ): AccountData {
-        val partnerId = authenticationService.getPartnerIdClaim(authToken)
+        val type = authenticationService.getClaim(TOKEN_TYPE_ID_CLAIM, accountToken)
+        val partnerId = authenticationService.getClaim(PARTNER_ID_CLAIM, accountToken)
 
         logger.info {
             "Getting $accountId account data for $partnerId partner"
         }
 
-        return accountUserService.getAccountData(accountId)
+        return accountUserService.getAccountData(accountId, type)
     }
 
     @GetMapping("/{accountId}/users")
-    @ApiOperation("Get Account Users")
+    @ApiOperation(
+        value = "Get Account Users",
+        notes = "Get the account user using the Partner token ant the common accountID"
+    )
     fun getAccountUsers(
         @PathVariable accountId: String,
-        @RequestHeader("Authentication") authToken: String
+        @RequestHeader("Authentication") accountToken: String
     ): AccountUsers {
-        val partnerId = authenticationService.getPartnerIdClaim(authToken)
+        val type = authenticationService.getClaim(TOKEN_TYPE_ID_CLAIM, accountToken)
+        val partnerId = authenticationService.getClaim(PARTNER_ID_CLAIM, accountToken)
 
         logger.info {
             "Getting $accountId account users for $partnerId partner"
         }
 
-        return accountUserService.getPlanUsers(accountId)
+        return accountUserService.getPlanUsers(accountId, type)
     }
 
 }
