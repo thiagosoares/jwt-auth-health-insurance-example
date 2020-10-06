@@ -58,11 +58,11 @@ class AccountController(
         val type = authenticationService.getClaim(TOKEN_TYPE_ID_CLAIM, accountToken)
         val partnerId = authenticationService.getClaim(PARTNER_ID_CLAIM, accountToken)
 
-        logger.info {
-            "Getting $accountId account users for $partnerId partner"
+        return accountUserService.getPlanUsers(accountId, type).also {
+            logger.info {
+                "Getting $accountId account users for $partnerId partner"
+            }
         }
-
-        return accountUserService.getPlanUsers(accountId, type)
     }
 
 }
