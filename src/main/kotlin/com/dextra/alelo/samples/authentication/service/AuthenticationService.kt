@@ -17,7 +17,7 @@ class AuthenticationService {
     fun getPartnerAuthenticationToken(login: PartnerLogin): LoginResponse {
 
         val jwtBuilder = getJwtBuilder()
-            .withClaim(PARTNER_ID_CLAIM, login.username)
+            .withClaim(PARTNER_ID_CLAIM, login.clientId)
             .withClaim(TOKEN_TYPE_ID_CLAIM, "Partner")
             .sign(getAlgorithm())
 

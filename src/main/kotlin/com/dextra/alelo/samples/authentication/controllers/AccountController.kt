@@ -8,6 +8,7 @@ import com.dextra.alelo.samples.authentication.service.AuthenticationService.Com
 import com.dextra.alelo.samples.authentication.service.AuthenticationService.Companion.TOKEN_TYPE_ID_CLAIM
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import mu.KotlinLogging
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -34,7 +35,7 @@ class AccountController(
     )
     fun getAccountData(
         @PathVariable accountId: String,
-        @RequestHeader("Authentication") accountToken: String
+        @RequestHeader("Authentication") @ApiParam(value = "Partner Token") accountToken: String
     ): AccountData {
         val type = authenticationService.getClaim(TOKEN_TYPE_ID_CLAIM, accountToken)
         val partnerId = authenticationService.getClaim(PARTNER_ID_CLAIM, accountToken)
@@ -53,7 +54,7 @@ class AccountController(
     )
     fun getAccountUsers(
         @PathVariable accountId: String,
-        @RequestHeader("Authentication") accountToken: String
+        @RequestHeader("Authentication") @ApiParam(value = "Partner Token") accountToken: String
     ): AccountUsers {
         val type = authenticationService.getClaim(TOKEN_TYPE_ID_CLAIM, accountToken)
         val partnerId = authenticationService.getClaim(PARTNER_ID_CLAIM, accountToken)

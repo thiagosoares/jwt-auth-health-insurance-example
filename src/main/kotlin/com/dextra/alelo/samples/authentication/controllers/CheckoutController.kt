@@ -5,6 +5,7 @@ import com.dextra.alelo.samples.authentication.service.AuthenticationService
 import com.dextra.alelo.samples.authentication.service.AuthenticationService.Companion.PARTNER_ID_CLAIM
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import mu.KotlinLogging
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,7 +27,7 @@ class CheckoutController(
     @GetMapping("/pages")
     @ApiOperation("Get checkout pages")
     fun getAccountData(
-        @RequestHeader("Authentication") authToken: String
+        @RequestHeader("Authentication") @ApiParam(value = "User Token") authToken: String
     ): String {
 
         val partnerId = authenticationService.getClaim(PARTNER_ID_CLAIM, authToken)

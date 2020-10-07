@@ -6,6 +6,7 @@ import com.dextra.alelo.samples.authentication.model.response.LoginResponse
 import com.dextra.alelo.samples.authentication.service.AuthenticationService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -39,7 +40,7 @@ class AuthenticationController(
     )
     fun getAccountAuthenticationToken(
         @RequestBody login: AccountLogin,
-        @RequestHeader("Authentication") authToken: String
+        @RequestHeader("Authentication") @ApiParam(value = "Partner Token") authToken: String
     ): LoginResponse {
         return authenticationService.getAccountAuthenticationToken(login, authToken)
     }
