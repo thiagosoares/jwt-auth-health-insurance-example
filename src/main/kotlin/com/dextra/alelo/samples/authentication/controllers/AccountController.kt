@@ -2,6 +2,7 @@ package com.dextra.alelo.samples.authentication.controllers
 
 import com.dextra.alelo.samples.authentication.model.response.AccountData
 import com.dextra.alelo.samples.authentication.model.response.AccountUsers
+import com.dextra.alelo.samples.authentication.model.response.InvoiceResponse
 import com.dextra.alelo.samples.authentication.service.AccountUserService
 import com.dextra.alelo.samples.authentication.service.AuthenticationService
 import com.dextra.alelo.samples.authentication.service.AuthenticationService.Companion.PARTNER_ID_CLAIM
@@ -31,7 +32,7 @@ class AccountController(
     @GetMapping("/{accountId}")
     @ApiOperation(
         value = "Get Account Data",
-        notes = "Get the account data using the Partner token ant the common accountID"
+        notes = "Get the account data using the Partner token and accountID"
     )
     fun getAccountData(
         @PathVariable accountId: String,
@@ -50,7 +51,7 @@ class AccountController(
     @GetMapping("/{accountId}/users")
     @ApiOperation(
         value = "Get Account Users",
-        notes = "Get the account user using the Partner token ant the common accountID"
+        notes = "Get the account user using the Partner token and accountID"
     )
     fun getAccountUsers(
         @PathVariable accountId: String,
@@ -62,6 +63,19 @@ class AccountController(
         return accountUserService.getPlanUsers(accountId, type).also {
             logger.info {
                 "Getting $accountId account users for $partnerId partner"
+            }
+        }
+    }
+
+    @GetMapping("/invoice")
+    @ApiOperation("Get account invoice as user")
+    fun getAccountData(
+        @RequestHeader("Authentication") @ApiParam(value = "Account Token") authToken: String
+    ): InvoiceResponse {
+        val accountId = authenticationService.getClaim(AuthenticationService.ACCOUNT_ID_CLAIM, authToken)
+        return accountUserService.getInvoice(accountId).also {
+            logger.info {
+                "Getting account $accountId invoice data"
             }
         }
     }

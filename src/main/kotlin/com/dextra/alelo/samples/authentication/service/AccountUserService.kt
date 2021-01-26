@@ -3,6 +3,7 @@ package com.dextra.alelo.samples.authentication.service
 import com.dextra.alelo.samples.authentication.exception.UnauthorizedException
 import com.dextra.alelo.samples.authentication.model.response.AccountData
 import com.dextra.alelo.samples.authentication.model.response.AccountUsers
+import com.dextra.alelo.samples.authentication.model.response.InvoiceResponse
 import org.springframework.stereotype.Component
 
 @Component
@@ -23,6 +24,15 @@ class AccountUserService {
             "456" -> getThorPlan()
             else -> getCaptainAmericaPlan()
         }
+    }
+
+    fun getInvoice(accountId: String): InvoiceResponse {
+        return InvoiceResponse(
+            accountId = accountId,
+            paymentType = "CARD",
+            discount = 10.00F,
+            invoiceTotal = 199.00F
+        )
     }
 
     private fun verifyTokenType(type: String) {

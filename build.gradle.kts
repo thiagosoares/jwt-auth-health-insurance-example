@@ -7,7 +7,7 @@ plugins {
 	kotlin("plugin.spring") version "1.3.72"
 }
 
-group = "com.dextra.alelo.samples"
+group = "com.dextra.samples"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
