@@ -28,3 +28,42 @@ To **build** the the application, you can use:
 API will be available in [http://localhost:8080]
 
 You can check the API documentation in [http://localhost:8080/swagger-ui.html]
+
+
+
+
+<div hidden>
+```
+
+@startuml authDiagram
+
+boundary "Partner Service" as PartnerService
+autoactivate on
+
+PartnerService  -> AuthenticationController: Login as Partner
+AuthenticationController  ->  AuthenticationService: POST /auth/login {clientId}
+AuthenticationController <--  AuthenticationService: Partner Token
+PartnerService  <-- AuthenticationController: Partner Login
+
+PartnerService  -> AuthenticationController: Login as User
+AuthenticationController  ->  AuthenticationService: POST /auth/account/login [PartnerToken] + {accountId}
+AuthenticationController <--  AuthenticationService: Account specific token
+PartnerService  <-- AuthenticationController: Account Login
+
+
+PartnerService -> AccountController: Get Account Users as Partner
+AccountController -> AccountService: Get /account/{accountId}/users + [PartnerToken]
+AccountController <-- AccountService: Account Users
+PartnerService <-- AccountController:  Account Users 
+
+
+PartnerService -> AccountController: Get Account Invoice as User
+AccountController -> AccountService: Get Account Invoice as User /account/{accountId} [AccountToken]
+AccountController <-- AccountService: Get Account Invoice 
+PartnerService <-- AccountController: Account Invoice
+
+@enduml
+```
+</div>
+
+![](authDiagram.svg)
