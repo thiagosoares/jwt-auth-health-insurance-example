@@ -25,7 +25,7 @@ To **build** the the application, you can use:
 
 - Run API with Gradle: ```./gradlew bootRun ```
 
-API will be available in [](http://localhost:8080)
+API will be available in http://localhost:8080
 
 You can check the API documentation in http://localhost:8080/swagger-ui.html
 
